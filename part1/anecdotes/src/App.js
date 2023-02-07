@@ -56,7 +56,7 @@ const App = () => {
     const copy = [...votes];
     copy[selected] += 1;
     const max = copy.indexOf(Math.max(...copy));
-    console.log("max num is" + Math.max(...copy));
+    console.log("max num is", Math.max(...copy));
     setFavAnec(anecdotes[max]);
     console.log(anecdotes[max]);
     const maxvotes = Math.max(...copy);
