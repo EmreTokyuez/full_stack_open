@@ -36,7 +36,7 @@ const Total = ({ parts }) => {
   );
 };
 const Course = ({ course }) => {
-  // console.log(course);
+  console.log("course ", course.name);
   return (
     <>
       <Header name={course.name}></Header>
@@ -45,4 +45,21 @@ const Course = ({ course }) => {
     </>
   );
 };
-export default Course;
+
+const Courses = ({ courses }) => {
+  console.log("courses", courses);
+  let mapped = courses.map((course) => (
+    <Course key={course.id} name={course.name} parts={course.parts} />
+  ));
+  console.log("mapped name", mapped[0].props.name);
+  return (
+    <>
+      <ul>
+        {courses.map((course) => (
+          <Course key={course.id} course={course} />
+        ))}
+      </ul>
+    </>
+  );
+};
+export default Courses;
