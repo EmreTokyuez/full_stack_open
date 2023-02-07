@@ -1,4 +1,7 @@
 import { useState } from "react";
+const Button = (props) => {
+  return <button onClick={props.handleclick}> {props.text}</button>;
+};
 
 const App = () => {
   const anecdotes = [
@@ -13,8 +16,29 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const ranSelector = () => {
+    let min = Math.ceil(0);
+    let max = Math.floor(anecdotes.length);
+    let num = Math.floor(Math.random() * (max - min) + min);
+    // console.log(num);
+    return num; // The maximum is exclusive and the minimum is inclusive
+  };
 
-  return <div>{anecdotes[selected]}</div>;
+  const selectAnectode = () => {
+    let num = ranSelector();
+    console.log(num);
+    return setSelected(num);
+  };
+
+  return (
+    <div>
+      {anecdotes[selected]}
+      <div></div>
+      <Button handleclick={selectAnectode} text={"next anectode"}>
+        {" "}
+      </Button>
+    </div>
+  );
 };
 
 export default App;
