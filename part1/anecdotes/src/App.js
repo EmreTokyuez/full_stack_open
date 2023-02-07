@@ -44,9 +44,9 @@ const App = () => {
     copy[selected] += 1;
     return setvote(copy);
   };
-
   return (
     <div>
+      <h1> anectode of the day</h1>
       {anecdotes[selected]}
       <div></div>
       <StatisticLine stat={"votes"} num={votes[selected]}>
