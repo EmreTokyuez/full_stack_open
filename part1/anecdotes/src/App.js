@@ -3,6 +3,26 @@ const Button = (props) => {
   return <button onClick={props.handleclick}> {props.text}</button>;
 };
 
+const StatisticLine = (props) => {
+  return (
+    <p>
+      {props.stat} {props.num}
+    </p>
+  );
+};
+
+const MaxVotes = (prop) => {
+  return (
+    <>
+      <h2>Most voted anectode </h2>
+      <div>
+        {" "}
+        <p> {prop.anecdote}</p>
+      </div>
+      <p> has {prop.votes} votes </p>
+    </>
+  );
+};
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -17,20 +37,14 @@ const App = () => {
 
   const [votes, setvote] = useState(new Uint8Array(anecdotes.length));
   const [selected, setSelected] = useState(0);
+  const [favAnec, setFavAnec] = useState("");
+  const [mostVotes, setmostVotes] = useState(0);
+
   const ranSelector = () => {
     let min = Math.ceil(0);
     let max = Math.floor(anecdotes.length);
     let num = Math.floor(Math.random() * (max - min) + min);
-    console.log(num);
     return num; // The maximum is exclusive and the minimum is inclusive
-  };
-
-  const StatisticLine = (props) => {
-    return (
-      <p>
-        {props.stat} {props.num}
-      </p>
-    );
   };
 
   const selectAnectode = () => {
@@ -39,9 +53,14 @@ const App = () => {
   };
 
   const voting = () => {
-    console.log(votes[selected]);
     const copy = [...votes];
     copy[selected] += 1;
+    const max = copy.indexOf(Math.max(...copy));
+    console.log("max num is" + Math.max(...copy));
+    setFavAnec(anecdotes[max]);
+    console.log(anecdotes[max]);
+    const maxvotes = Math.max(...copy);
+    setmostVotes(maxvotes);
     return setvote(copy);
   };
   return (
@@ -54,6 +73,7 @@ const App = () => {
       </StatisticLine>
       <Button handleclick={voting} text={"vote"} />
       <Button handleclick={selectAnectode} text={"next anectode"} />
+      <MaxVotes anecdote={favAnec} votes={mostVotes}></MaxVotes>
     </div>
   );
 };
