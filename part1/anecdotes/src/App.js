@@ -15,28 +15,45 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  const [votes, setvote] = useState(new Uint8Array(anecdotes.length));
   const [selected, setSelected] = useState(0);
   const ranSelector = () => {
     let min = Math.ceil(0);
     let max = Math.floor(anecdotes.length);
     let num = Math.floor(Math.random() * (max - min) + min);
-    // console.log(num);
+    console.log(num);
     return num; // The maximum is exclusive and the minimum is inclusive
+  };
+
+  const StatisticLine = (props) => {
+    return (
+      <p>
+        {props.stat} {props.num}
+      </p>
+    );
   };
 
   const selectAnectode = () => {
     let num = ranSelector();
-    console.log(num);
     return setSelected(num);
+  };
+
+  const voting = () => {
+    console.log(votes[selected]);
+    const copy = [...votes];
+    copy[selected] += 1;
+    return setvote(copy);
   };
 
   return (
     <div>
       {anecdotes[selected]}
       <div></div>
-      <Button handleclick={selectAnectode} text={"next anectode"}>
+      <StatisticLine stat={"votes"} num={votes[selected]}>
         {" "}
-      </Button>
+      </StatisticLine>
+      <Button handleclick={voting} text={"vote"} />
+      <Button handleclick={selectAnectode} text={"next anectode"} />
     </div>
   );
 };
