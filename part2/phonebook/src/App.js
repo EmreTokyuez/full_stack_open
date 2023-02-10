@@ -6,13 +6,20 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    console.log("Button clicked", event.target);
-    // persons.concat(event.target.value);
-    console.log("persons after concat", persons);
+    const personObject = {
+      name: newName,
+    };
+    console.log(persons.includes(personObject));
+    if (persons.includes(personObject)) {
+      console.log("error");
+    } else {
+      setPersons(persons.concat(personObject));
+      setNewName("");
+    }
   };
 
   const PersonChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setNewName(event.target.value);
   };
   return (

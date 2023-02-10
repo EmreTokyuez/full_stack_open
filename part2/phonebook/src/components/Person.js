@@ -1,5 +1,5 @@
 const Person = ({ person }) => {
-  console.log("object", { person });
+  // console.log("object", { person });
   return <li>{person.name}</li>;
 };
 
