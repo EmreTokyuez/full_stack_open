@@ -9,9 +9,12 @@ const App = () => {
     const personObject = {
       name: newName,
     };
-    console.log(persons.includes(personObject));
-    if (persons.includes(personObject)) {
+    const names = persons.map((person) => person.name);
+    console.log("names: ", names);
+    if (names.includes(personObject.name)) {
       console.log("error");
+      window.alert(`${newName} is already added to phonebook`);
+      setNewName("");
     } else {
       setPersons(persons.concat(personObject));
       setNewName("");
