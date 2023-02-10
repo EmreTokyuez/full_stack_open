@@ -1,25 +1,26 @@
 import { useState } from "react";
-
-const PhoneNum = ({ person }) => {
-  console.log(person);
-  return <li>{person.name}</li>;
-};
-
+import Person from "./components/Person";
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      id: 1,
-      name: "emre",
-    },
-  ]);
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
+  const addPerson = (event) => {
+    event.preventDefault();
+    console.log("Button clicked", event.target);
+    // persons.concat(event.target.value);
+    console.log("persons after concat", persons);
+  };
+
+  const PersonChange = (event) => {
+    console.log(event.target.value);
+    setNewName(event.target.value);
+  };
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
+      <form onSubmit={addPerson}>
         <div>
-          name: <input />
+          name: <input value={newName} onChange={PersonChange} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -27,7 +28,11 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        <PhoneNum key={persons[0].id} name={persons[0].name} />
+        <ul>
+          {persons.map((person) => (
+            <Person key={person.name} person={person} />
+          ))}
+        </ul>
       </ul>
     </div>
   );
