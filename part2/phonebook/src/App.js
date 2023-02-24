@@ -2,22 +2,40 @@ import { useState, useEffect } from "react";
 import Persons from "./components/Persons.js";
 import PersonFilter from "./components/PersonFilter.js";
 import PersonForm from "./components/PersonForm";
-import axios from "axios";
+// import axios from "axios";
+import personService from "./services/persons";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
   const [showAll, setShowAll] = useState(true);
-  const hook = () => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise fullfilled");
-      setPersons(response.data);
+  useEffect(() => {
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
+  }, []);
+  const removePerson = (personObject) => {
+    if (window.confirm(`Do you really want to delete ${personObject.name} `)) {
+      personService
+        .remove(personObject.id)
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== personObject.id ? person : returnedPerson
+            )
+          );
+        })
+        .catch((error) => {
+          alert("error");
+          setPersons(persons.filter((p) => p.id !== personObject.id));
+        });
+      window.open(`deleted ${personObject.name}`);
+    } else {
+      return;
+    }
   };
 
-  useEffect(hook, []);
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
@@ -32,10 +50,11 @@ const App = () => {
       setNewName("");
       setNewNumber("");
     } else {
-      setPersons(persons.concat(personObject));
-
-      setNewName("");
-      setNewNumber("");
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
   const addSearch = (event) => {
@@ -85,7 +104,11 @@ const App = () => {
         buttontext={"add"}
       ></PersonForm>
       <h2>Numbers</h2>
-      <Persons personList={PersonsToShow} />
+      <Persons
+        personList={PersonsToShow}
+        label={"delete"}
+        deleter={() => removePerson(PersonsToShow)}
+      />
     </div>
   );
 };
